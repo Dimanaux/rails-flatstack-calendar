@@ -1,6 +1,27 @@
-@import "bootstrap-sprockets";
+// @import "bootstrap-sprockets";
 @import "bootstrap";
 
-table, td, th {
-  border: 1px solid black;
+$bg-color: rgba(160, 80, 0, 0.05);
+$medium-black: rgba(0, 0, 0, 0.6);
+$light-black: rgba(0, 0, 0, 0.3);
+$strong-black: rgba(0, 0, 0, 0.8);
+
+$default-pad: 1em;
+$small-pad: 0.5em;
+$medium-pad: 1.3em;
+$large-pad: 2.5em;
+
+$animation-duration: 0.5s;
+
+.page-header {
+  color: $medium-black;
+  font-size: $large-pad;
+}
+
+.header-item {
+  text-align: center;
+}
+
+.header-item-small {
+  margin: $medium-pad 0;
 }

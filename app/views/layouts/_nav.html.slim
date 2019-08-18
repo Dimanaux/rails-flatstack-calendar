@@ -1,0 +1,13 @@
+.row
+  .col-4.header-item.header-item-small
+    - if current_account
+      = link_to current_account.email, current_account
+  .col-4.header-item
+    = link_to 'Flatendar', root_path, class: 'page-header'
+  .col-4.header-item.header-item-small
+    - if current_account
+      = link_to 'sign out', destroy_account_session_path, method: :delete
+    - else
+      = link_to 'sign up', new_account_registration_path
+      = " or "
+      = link_to 'sign in', new_account_session_path
