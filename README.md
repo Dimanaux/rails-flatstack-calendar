@@ -22,3 +22,8 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+To run locally:
+- create PostgreSQL user flatendar with password flatendar
+- create databases flatendar, flatendar_development, flatendar_test
+- bundle install

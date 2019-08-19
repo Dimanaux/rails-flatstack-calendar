@@ -5,19 +5,4 @@ p
   = '/'
   = @month
 
-table
-  thead
-    tr
-      th Title
-      th Description
-      th Datetime
-      th Until
-
-  tbody
-    - @events.each do |event|
-      tr
-        td = event.title
-        td = event.description
-        td = event.datetime
-        td = event.until
-        td = link_to 'Show', event
+= render 'calendar/calendar', events: @events

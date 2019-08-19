@@ -4,4 +4,6 @@ Rails.application.routes.draw do
 
   get 'calendar(/:year_and_month)', to: 'calendar#show', name: 'calendar'
   root to: 'calendar#show'
+
+  resources :accounts, only: [:show]
 end

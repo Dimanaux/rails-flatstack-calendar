@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_18_131017) do
+ActiveRecord::Schema.define(version: 2019_08_19_071542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,14 +27,17 @@ ActiveRecord::Schema.define(version: 2019_08_18_131017) do
     t.index ["reset_password_token"], name: "index_accounts_on_reset_password_token", unique: true
   end
 
-  create_table "events", force: :cascade do |t|
-    t.string "title"
-    t.string "description"
-    t.bigint "account_id"
+# Could not dump table "events" because of following StandardError
+#   Unknown type 'repeat_type' for column 'repeat_type'
+
+  create_table "repeats", force: :cascade do |t|
+    t.bigint "event_id"
+    t.datetime "datetime"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["account_id"], name: "index_events_on_account_id"
+    t.index ["event_id"], name: "index_repeats_on_event_id"
   end
 
   add_foreign_key "events", "accounts"
+  add_foreign_key "repeats", "events"
 end

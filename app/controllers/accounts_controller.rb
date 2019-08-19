@@ -1,7 +1,9 @@
 class AccountsController < ApplicationController
   before_action :set_account, only: [:show]
 
-  def show; end
+  def show
+    @events = @account.events
+  end
 
   private
 
