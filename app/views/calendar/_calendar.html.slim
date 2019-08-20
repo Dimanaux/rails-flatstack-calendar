@@ -7,10 +7,8 @@ table
       th Until
 
   tbody
-    - events.each do |event|
+    - repeats.each do |r|
       tr
-        td = event.title
-        td = event.description
-        td = event.datetime
-        td = event.until
-        td = link_to 'Show', event
+        td = r.event.title
+        td = r.datetime
+        td = link_to 'Show', r.event
