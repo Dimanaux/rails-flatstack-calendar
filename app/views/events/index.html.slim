@@ -17,8 +17,8 @@ table
       tr
         td = event.title
         td = event.description
-        td = event.datetime
-        td = event.until
+        td = event.from
+        td = event.to
         td = link_to 'Show', event
         td = link_to 'Edit', edit_event_path(event)
         td = link_to 'Destroy', event, method: :delete, data: { confirm: 'Are you sure?' }

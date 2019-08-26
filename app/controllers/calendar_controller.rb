@@ -11,7 +11,6 @@ class CalendarController < ApplicationController
 
   def set_year_and_month
     today = Date.today
-    @year = today.year
-    @month = today.month
+    @date = today
   end
 end

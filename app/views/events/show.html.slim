@@ -10,7 +10,20 @@ p
 
 p
   strong = 'Account: '
-  = @event.account
+  = link_to @event.account.email, @event.account
+
+p
+  strong = 'Repeat: '
+  = @event.repeat_type
+
+p
+  strong = 'From: '
+  = @event.from
+
+- unless @event.once?
+  p
+    strong = 'To: '
+    = @event.to
 
 = link_to 'Edit', edit_event_path(@event)
 = '|'
