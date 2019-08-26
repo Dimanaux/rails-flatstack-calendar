@@ -3,7 +3,8 @@ class CalendarController < ApplicationController
 
   # GET /calendar/1
   def show
-    @events = Event.all
+    @days = Event.all
+    @week_days = ['Sunday', 'Monday', 'T', 'W', 'T', 'F', 'Saturday']
   end
 
   private

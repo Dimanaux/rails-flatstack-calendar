@@ -1,8 +1,6 @@
 h1 Calendar
 
-p
-  = @year
-  = '/'
-  = @month
+= render 'calendar/calendar', days: @days, week_days: @week_days
 
-= render 'calendar/calendar', events: @events
+= link_to 'New Event', new_event_path
+
