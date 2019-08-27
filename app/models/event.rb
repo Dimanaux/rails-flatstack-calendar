@@ -3,37 +3,51 @@ class Event < ApplicationRecord
   belongs_to :account
   has_many :repeats, dependent: :delete_all
 
-  enum repeat_type: { once: 'once', daily: 'daily', weekly: 'weekly', monthly: 'monthly', annually: 'annually' }
+  enum repeat_type: {
+    once: 'once', daily: 'daily',
+    weekly: 'weekly', monthly: 'monthly',
+    annually: 'annually'
+  }
 
   attr_accessor :from, :to
 
   def create_repeats
-    if self.once?
+    if once?
       repeat_once!
     else
-      repeat!(time_unit(self.repeat_type))
+      repeat!(time_unit(repeat_type))
     end
+  end
+
+  def update_repeats
+    Repeat.where('event_id = :id', id: id).destroy_all
+    create_repeats
+  end
+
+  def fetch_from_to!
+    self.from = repeats.map(&:datetime).min
+    self.to = repeats.map(&:datetime).max unless once?
   end
 
   private
 
   def time_unit(repeat_type)
     return :years if repeat_type == 'annually'
-    self.repeat_type.sub('ly', 's').to_sym
+    repeat_type.sub('ly', 's').to_sym
   end
 
   def repeat!(timeunit)
     timeunit_proc = timeunit.to_proc
     i = 0
-    repeat_date = self.from + timeunit_proc.call(i)
-    while repeat_date <= self.to
+    repeat_date = from + timeunit_proc.call(i)
+    while repeat_date <= to
       Repeat.create(event: self, datetime: repeat_date)
       i += 1
-      repeat_date = self.from + timeunit_proc.call(i)
+      repeat_date = from + timeunit_proc.call(i)
     end
   end
 
   def repeat_once!
-    Repeat.create(event: self, datetime: self.from)
+    Repeat.create(event: self, datetime: from)
   end
 end
