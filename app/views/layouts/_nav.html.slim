@@ -1,7 +1,9 @@
 .row
   .col-4.header-item.header-item-small
     - if current_account
-      = link_to current_account.email, current_account
+      = link_to "#{current_account.name || current_account.email}", edit_account_registration_path
+      = ' - '
+      = link_to 'My events', current_account
   .col-4.header-item
     = link_to 'Flatendar', root_path, class: 'page-header'
   .col-4.header-item.header-item-small
