@@ -1,2 +1,7 @@
-= "events of #{@account.email}"
-= render 'calendar/calendar', events: @events
+.container-fluid
+  header
+    h5.display-5.mb-4.text-center
+      = @account.name || @account.email
+
+= render 'calendar/calendar', days: @days
+= link_to 'New Event', new_event_path
