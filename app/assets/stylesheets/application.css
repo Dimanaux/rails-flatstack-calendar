@@ -1,0 +1,12 @@
+.page-header {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 2.5em;
+}
+
+.header-item {
+  text-align: center;
+}
+
+.header-item-small {
+  margin: 1.3em 0;
+}
