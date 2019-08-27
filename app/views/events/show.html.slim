@@ -10,7 +10,7 @@ p
 
 p
   strong = 'Account: '
-  = link_to @event.account.email, @event.account
+  = link_to @event.account.name || @event.account.email, @event.account
 
 p
   strong = 'Repeat: '
@@ -25,6 +25,7 @@ p
     strong = 'To: '
     = @event.to
 
-= link_to 'Edit', edit_event_path(@event)
-= '|'
-= link_to 'Back', events_path
+- if @event.account == current_account
+  = link_to 'Edit', edit_event_path(@event)
+  = ' | '
+= link_to 'Back', calendar_path_url
