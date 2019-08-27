@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: %( show edit update destroy )
-  before_action :set_from_to, only: %( show edit )
-  before_action :authenticate_account!, only: %( new edit create update destroy)
+  before_action :set_event, only: %i( show edit update destroy )
+  before_action :set_from_to, only: %i( show edit )
+  before_action :authenticate_account!, only: %i( new edit create update destroy)
 
   # GET /events
   # GET /events.json
@@ -80,7 +80,6 @@ class EventsController < ApplicationController
     params.require(:event).permit(
       :title,
       :description,
-      :account_id,
       :repeat_type,
       :from,
       :to
