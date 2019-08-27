@@ -1,8 +1,7 @@
 class EventsController < ApplicationController
-  before_action :set_event, only: [:show, :edit, :update, :destroy]
-  before_action :set_from, only: [:show, :edit]
-  before_action :set_to, only: [:show, :edit]
-  before_action :authenticate_account!, only: [:new, :edit, :create, :update, :destroy]
+  before_action :set_event, only: %( show edit update destroy )
+  before_action :set_from_to, only: %( show edit )
+  before_action :authenticate_account!, only: %( new edit create update destroy)
 
   # GET /events
   # GET /events.json
@@ -17,6 +16,7 @@ class EventsController < ApplicationController
   # GET /events/new
   def new
     @event = Event.new
+    @event.from = Date.parse(params[:from]).to_time if params[:from]
   end
 
   # GET /events/1/edit
@@ -25,16 +25,13 @@ class EventsController < ApplicationController
   # POST /events
   # POST /events.json
   def create
-    puts event_params
     @event = Event.new(event_params)
-    convert_datetimes
+    convert_datetimes(@event)
     @event.account = current_account
-    @event.create_repeats
-
-    puts @event
 
     respond_to do |format|
       if @event.save
+        @event.create_repeats
         format.html { redirect_to @event, notice: 'Event was successfully created.' }
         format.json { render :show, status: :created, location: @event }
       else
@@ -47,8 +44,11 @@ class EventsController < ApplicationController
   # PATCH/PUT /events/1
   # PATCH/PUT /events/1.json
   def update
+    raise "Cannot update other's event" unless @event.account == current_account
+
     respond_to do |format|
       if @event.update(event_params)
+        @event.update_repeats
         format.html { redirect_to @event, notice: 'Event was successfully updated.' }
         format.json { render :show, status: :ok, location: @event }
       else
@@ -61,6 +61,8 @@ class EventsController < ApplicationController
   # DELETE /events/1
   # DELETE /events/1.json
   def destroy
+    raise "Can't destroy other's event" unless @event.account == current_account
+
     @event.destroy
     respond_to do |format|
       format.html { redirect_to events_url, notice: 'Event was successfully destroyed.' }
@@ -75,23 +77,22 @@ class EventsController < ApplicationController
   end
 
   def event_params
-    params.require(:event).permit(:title, :description, :account_id, :repeat_type, :from, :to)
+    params.require(:event).permit(
+      :title,
+      :description,
+      :account_id,
+      :repeat_type,
+      :from,
+      :to
+    )
   end
 
-  def set_from
-    @event.from = @event.repeats.map(&:datetime).min
+  def set_from_to
+    @event.fetch_from_to!
   end
 
-  def set_to
-    unless @event.once?
-      @event.to = @event.repeats.map(&:datetime).max
-    end
-  end
-
-  def convert_datetimes
-    @event.from = Time.new(*@event.from.values)
-    if @event.to
-      @event.to = Time.new(*@event.to.values)
-    end
+  def convert_datetimes(event)
+    event.from = Time.new(*event.from.values)
+    event.to = Time.new(*event.to.values) if event.to
   end
 end
